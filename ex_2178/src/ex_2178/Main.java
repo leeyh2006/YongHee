@@ -1,124 +1,92 @@
 package ex_2178;
 
+import java.util.ArrayDeque;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
-
-	static int N, M, ad[][],count =0;
-	static boolean visit[][];
-
-	static Point p ,in;
-
-	public static void main(String[] args) throws CloneNotSupportedException {
+	static int ans = 1;
+	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		 int N, M, ad[][];
+		 boolean visit[][];
 		Scanner sc = new Scanner(System.in);
 
 		String matrix = "";
-
-		p = new Point();
 
 
 
 		N = sc.nextInt();
 		M = sc.nextInt();
 
-		ad = new int[N + 1][M + 1];
-		visit = new boolean[N + 1][M + 1];
+		ad = new int[N][M];
+		visit = new boolean[N][M];
 
-		for (int i = 1; i <= N; i++) {
+		for (int i = 0; i < N; i++) {
 			matrix = sc.next();
-			StringBuilder str = new StringBuilder(matrix);
-			str.insert(0, " ");
-			for (int j = 1; j <= M; j++) {
-				ad[i][j] = Integer.parseInt(str.toString().charAt(j) +"");
-
+			for (int j = 0; j < M; j++) {
+				ad[i][j] = Integer.parseInt(matrix.charAt(j) + "");
+				visit[i][j] = false;
 			}
 		}
-		//		 for(int i= 1; i<=N;i++){
-		//			 for(int j =1 ; j<=M;j++){
-		//			 System.out.print(ad[i][j]);
-		//			 }
-		//			 System.out.println();
-		//			 }
-		BFS();
 
-
-
+		BFS(ad,visit,N,M);
+		System.out.println(ans);
+		sc.close();
 	}
 
-	public static void BFS() throws CloneNotSupportedException {
+	public static void BFS(int ad[][],boolean visit[][],int N,int M)  {
+		 Point p;
 		Queue<Point> q = new LinkedList<Point>();
+		int dx[] = { 0, 0, 1, -1 }, 
+				dy[] = { 1, -1, 0, 0 };
+		p = new Point();
+	
 
-		in = p.clone();
+		p.x = 0;
+		p.y = 0;
 
-		p.x = 1;
-		p.y = 1;
-		p.l = 0;
-		
-		
-		in.x =1;
-		in.y=1;
-		in.l=0;
+		q.add(p);
 
-
-		q.offer(p);
-
+		visit[0][0] = true;
 		while (!q.isEmpty()) {
-			p = q.poll();
-			in = p.clone();
 			
-			visit[1][1]=true;
-			System.out.println( p.x +","+ p.y+"¿¡¼­");
-				if (p.y<=M-1 && (ad[p.x][p.y + 1] != 0 && !visit[p.x][p.y + 1])) {
-					visit[p.x][p.y+1]=true;
-					in.x=p.x;
-					in.y =(p.y+1);
-					in.l++;
-					System.out.println(" "+in.x+","+in.y +"·Î");
-					q.offer(in);
+			int sz = q.size();
+			for (int z = 0; z < sz; z++) {
+				p = q.poll();
+				int x = p.x, y = p.y;
+				System.out.println(p.x + " , " + p.y);
+				if (x == N - 1 && y ==M - 1) {
+					System.out.println(ans);
+					break;
 				}
-				 if(p.x<= N-1 && (ad[p.x+1][p.y] != 0 && !visit[p.x+1][p.y])){
-						visit[p.x+1][p.y]=true;
-						in.x=p.x+1;
-						in.y=p.y;
-						in.l++;
-						System.out.println(" "+in.x+","+in.y +"·Î");
-						q.offer(in);
-
+				for (int i = 0; i < 4; i++) {
+					int nx = x + dx[i], ny = y + dy[i];
+					System.out.println("1nx ny " + nx + "," + ny);
+					if (nx < 0 || ny < 0 || nx > N - 1 || ny > M - 1) {
+						continue;
 					}
-				 if(p.y >=1 &&(ad[p.x][p.y-1]!= 0 && !visit[p.x][p.y-1])){
-					 visit[p.x][p.y-1]=true;
-					in.x=p.x;
-					in.y = p.y-1;
-					in.l++;
-					System.out.println(" "+in.x+","+in.y +"·Î");
-					q.offer(in);
-
-				}   
-				 if(p.x >=1 &&(ad[p.x-1][p.y]!= 0 && !visit[p.x-1][p.y])){
-					visit[p.x-1][p.y]=true;
-					in.x = p.x-1;
-					in.y=p.y;
-					in.l++;
-					System.out.println(" "+in.x+","+in.y +"·Î");
-					q.offer(in);
+					if(ad[nx][ny]==1 && !visit[nx][ny]){
+						visit[nx][ny] = true;
+						p.x = nx;
+						p.y = ny;
+						q.offer(p);
+					}
+//					if (ad[nx][ny]==0){
+//						continue;
+//					}
+//					if(visit[nx][ny])continue;
 				}
-			
-				System.out.println("p.L ="+ p.l);
-				if(in.x == N && in.y==M)break;
 			}
-		
+			ans++;
+		}
 
 	}
 }
 
-class Point implements Cloneable{
+class Point {
+	int x, y; // x,y,l que ¸ÊÇÎ
 
-	int x, y, l; // x,y,l que ¸ÊÇÎ
-	public Point clone() throws CloneNotSupportedException{
-		return (Point) super.clone();
-
-	}
 }
