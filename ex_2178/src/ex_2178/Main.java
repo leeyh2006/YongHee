@@ -7,17 +7,12 @@ import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
-	static int ans = 1;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		 int N, M, ad[][];
-		 boolean visit[][];
+		int N, M, ad[][];
+		boolean visit[][];
 		Scanner sc = new Scanner(System.in);
-
 		String matrix = "";
-
-
-
 		N = sc.nextInt();
 		M = sc.nextInt();
 
@@ -33,60 +28,45 @@ public class Main {
 		}
 
 		BFS(ad,visit,N,M);
-		System.out.println(ans);
 		sc.close();
 	}
 
 	public static void BFS(int ad[][],boolean visit[][],int N,int M)  {
-		 Point p;
 		Queue<Point> q = new LinkedList<Point>();
-		int dx[] = { 0, 0, 1, -1 }, 
-				dy[] = { 1, -1, 0, 0 };
-		p = new Point();
-	
-
-		p.x = 0;
-		p.y = 0;
+		int dx[] = { 0, 0, 1, -1 }, dy[] = { 1, -1, 0, 0 };
+		Point p = new Point(0,0);
+		int ans = 1;
 
 		q.add(p);
-
 		visit[0][0] = true;
 		while (!q.isEmpty()) {
-			
 			int sz = q.size();
 			for (int z = 0; z < sz; z++) {
 				p = q.poll();
 				int x = p.x, y = p.y;
-				System.out.println(p.x + " , " + p.y);
-				if (x == N - 1 && y ==M - 1) {
-					System.out.println(ans);
-					break;
-				}
-				for (int i = 0; i < 4; i++) {
-					int nx = x + dx[i], ny = y + dy[i];
-					System.out.println("1nx ny " + nx + "," + ny);
-					if (nx < 0 || ny < 0 || nx > N - 1 || ny > M - 1) {
-						continue;
-					}
-					if(ad[nx][ny]==1 && !visit[nx][ny]){
-						visit[nx][ny] = true;
-						p.x = nx;
-						p.y = ny;
-						q.offer(p);
-					}
-//					if (ad[nx][ny]==0){
-//						continue;
-//					}
-//					if(visit[nx][ny])continue;
-				}
-			}
-			ans++;
-		}
+                if (x == N - 1 && y ==M - 1) {
+                    System.out.println(ans);
+                    System.exit(0);
+                }
+                for (int i = 0; i < 4; i++) {
+                    int nx = x + dx[i], ny = y + dy[i];
+                    if (nx < 0 || ny < 0 || nx >= N || ny >= M) continue;
+                    if(ad[nx][ny]==0 || visit[nx][ny]) continue;
 
-	}
+                    visit[nx][ny] = true;
+                    q.add(new Point(nx,ny));
+                }
+            }
+            ++ans;
+        }
+    }
 }
 
 class Point {
-	int x, y; // x,y,l que ¸ÊÇÎ
-
+    int x, y; // x,y,l que ¸ÊÇÎ
+    public Point(int x, int y) {
+        super();
+        this.x=x;
+        this.y=y;
+    }
 }
