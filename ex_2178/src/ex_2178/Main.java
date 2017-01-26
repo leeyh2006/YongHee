@@ -27,14 +27,14 @@ public class Main {
 			}
 		}
 
-		BFS(ad,visit,N,M);
+		BFS(ad, visit, N, M);
 		sc.close();
 	}
 
-	public static void BFS(int ad[][],boolean visit[][],int N,int M)  {
+	public static void BFS(int ad[][], boolean visit[][], int N, int M) {
 		Queue<Point> q = new LinkedList<Point>();
 		int dx[] = { 0, 0, 1, -1 }, dy[] = { 1, -1, 0, 0 };
-		Point p = new Point(0,0);
+		Point p = new Point(0, 0);
 		int ans = 1;
 
 		q.add(p);
@@ -44,29 +44,32 @@ public class Main {
 			for (int z = 0; z < sz; z++) {
 				p = q.poll();
 				int x = p.x, y = p.y;
-                if (x == N - 1 && y ==M - 1) {
-                    System.out.println(ans);
-                    System.exit(0);
-                }
-                for (int i = 0; i < 4; i++) {
-                    int nx = x + dx[i], ny = y + dy[i];
-                    if (nx < 0 || ny < 0 || nx >= N || ny >= M) continue;
-                    if(ad[nx][ny]==0 || visit[nx][ny]) continue;
+				if (x == N - 1 && y == M - 1) {
+					System.out.println(ans);
+					System.exit(0);
+				}
+				for (int i = 0; i < 4; i++) {
+					int nx = x + dx[i], ny = y + dy[i];
+					if (nx < 0 || ny < 0 || nx >= N || ny >= M)
+						continue;
+					if (ad[nx][ny] == 0 || visit[nx][ny])
+						continue;
 
-                    visit[nx][ny] = true;
-                    q.add(new Point(nx,ny));
-                }
-            }
-            ++ans;
-        }
-    }
+					visit[nx][ny] = true;
+					q.add(new Point(nx, ny));
+				}
+			}
+			++ans;
+		}
+	}
 }
 
 class Point {
-    int x, y; // x,y,l que ¸ÊÇÎ
-    public Point(int x, int y) {
-        super();
-        this.x=x;
-        this.y=y;
-    }
+	int x, y; // x,y,l que ¸ÊÇÎ
+
+	public Point(int x, int y) {
+		super();
+		this.x = x;
+		this.y = y;
+	}
 }
